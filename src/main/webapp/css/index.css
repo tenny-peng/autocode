@@ -1,0 +1,112 @@
+p {
+	display: inline-block; 
+	text-align: left;
+}
+
+button {
+	border-radius: 5px;
+}
+
+.text_center {
+	text-align:center
+}
+
+.input_length {
+	width: 60px;
+}
+
+.delBtn {
+	margin-left: 20px;
+	background: #FF7F50;
+}
+/* tab样式  */
+* {
+	margin: 0 auto;
+	padding: 0;
+	list-style-type: none;
+}
+/* 外层tab样式  */
+#tab {
+	width: 1456px;
+	position: relative;
+	margin: 40px auto;
+}
+#tab > .tab_menu {
+	width: 100%;
+	float: left;
+	position: absolute;
+	z-index: 1;
+}
+#tab > .tab_menu li {
+	float: left;
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+	border: 1px solid #c0c0c0;
+	border-bottom: 0px;
+	cursor: pointer;
+	text-align: center;
+	margin: 0 2px 0 0;
+}
+#tab > .tab_menu .selected {
+	background-color: #c0c0c0;
+	cursor: pointer;
+}
+#tab > .tab_box {
+	width: 1453px;
+	height: auto;
+	clear: both;
+	top: 30px;
+	position: relative;
+	border: 1px solid #c0c0c0;
+	background-color: #c0c0c0;
+}
+/* 内层tab样式  */
+.tab {
+	width: 1456px;
+	position: relative;
+	margin: 40px auto;
+}
+.tab > .tab_menu {
+	width: 100%;
+	float: left;
+	position: absolute;
+	z-index: 1;
+}
+.tab > .tab_menu li {
+	float: left;
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+	border: 1px solid #cfd6da;
+	border-bottom: 0px;
+	cursor: pointer;
+	text-align: center;
+	margin: 0 2px 0 0;
+}
+.tab > .tab_menu .selected {
+	background-color: #cfd6da;
+	cursor: pointer;
+}
+.tab > .tab_box {
+	width: 1453px;
+	height: auto;
+	clear: both;
+	top: 30px;
+	position: relative;
+	border: 1px solid #cfd6da;
+	background-color: #cfd6da;
+}
+.hide {
+	display: none;
+}
+.tab_box pre {
+	padding: 10px;
+	font: 16px/180% Arial, Helvetica, sans-serif, "新宋体";
+} 
+.tab_box textarea {
+	width: 1428px;
+	height: 500px;
+	padding: 10px;
+	font: 16px/180% Arial, Helvetica, sans-serif, "新宋体";
+}

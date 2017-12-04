@@ -68,7 +68,7 @@ public class MysqlUtil {
     	try{
             Statement stmt = con.createStatement();
              
-            String sql = "select column_name, data_type, column_key, is_nullable, column_comment from information_schema.columns where table_name='" + tableName + "'";
+            String sql = "select column_name, data_type, column_key, is_nullable, column_comment from information_schema.columns where table_name='" + tableName + "'and table_schema='" + DATABASE_URL.substring(DATABASE_URL.lastIndexOf("/") + 1, DATABASE_URL.length()) + "'";
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()){
                 HashMap<String,String> map = new HashMap<String,String>();

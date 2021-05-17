@@ -1,8 +1,9 @@
-package com.tenny.${interfaceName?lower_case}.entity;
+package com.starcare.ecg.${entityName?uncap_first};
 
 import java.util.Date;
+import com.starcare.ecg.base.BaseEntity;
 
-public class ${entityName} {
+public class ${entityName}Entity extends BaseEntity {
     
 <#list params as param>
 	// ${param.fieldNote}

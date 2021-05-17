@@ -20,6 +20,7 @@
 			<div id="mainDiv">
 				数据库类型：
 				<select name="db_type">
+					<option value='Postgresql'>Postgresql</option>
 					<option value='Mysql'>Mysql</option>
 					<option value='Oracle'>Oracle</option>
 				</select>
@@ -28,7 +29,7 @@
 				数据库用户名：
 				<input type="text" name="db_user" />
 				数据库密码：
-				<input type="password" name="db_pw" />
+				<input type="text" name="db_pw" />
 				数据库表：
 				<select name="db_table" onchange="getDafaultEntityName()">
 					<option value="none">none</option>
@@ -38,8 +39,7 @@
 		      	实体名(大写开头)*：
 				<input type="text" name="entityName" />
 				接口名(不填则默认同实体名)：
-				<input type="text" name="interfaceName" />
-			    <br/>
+				<input type="text" name="interfaceName" /><br/>
 			</div>
 			<button onclick="addField()">添加字段</button>
     		<button onclick="getCode()">提交</button>
@@ -53,42 +53,38 @@
     		<div class="tab_box">
 	    		<div id="class" class="tab">
 		    		<ul class="tab_menu">
-				        <li class="selected">service</li>
+				    	<li class="selected">controller</li>
+				        <li>service</li>
 				        <li>serviceImpl</li>
 				        <li>dao</li>
 				        <li>mapping</li>
 				        <li>entity</li>
-				        <li>controller</li>
-				        <li>test</li>
 				    </ul>
 		    		<div class="tab_box">
-			        	<textarea id="service"></textarea>
+			    		<textarea id="controller" class="hide"></textarea>
+			        	<textarea id="service" class="hide"></textarea>
 			        	<textarea id="serviceImpl" class="hide"></textarea>
 			        	<textarea id="dao" class="hide"></textarea>
 			        	<textarea id="mapping" class="hide"></textarea>
 			        	<textarea id="entity" class="hide"></textarea>
-			        	<textarea id="controller" class="hide"></textarea>
-			        	<textarea id="test" class="hide"></textarea>
 		    		</div>
 	    		</div>
 	        	<div id="template" class="tab hide">
 		        	<ul class="tab_menu">
-				        <li class="selected">service</li>
+				    	<li class="selected">controller</li>
+				        <li>service</li>
 				        <li>serviceImpl</li>
 				        <li>dao</li>
 				        <li>mapping</li>
 				        <li>entity</li>
-				        <li>controller</li>
-				        <li>test</li>
 				    </ul>
 		    		<div class="tab_box">
-			        	<pre id="serviceTemplate"></pre>
+			    		<pre id="controllerTemplate"></pre>
+			        	<pre id="serviceTemplate" class="hide"></pre>
 			        	<pre id="serviceImplTemplate" class="hide"></pre>
 			        	<pre id="daoTemplate" class="hide"></pre>
 			        	<pre id="mappingTemplate" class="hide"></pre>
 			        	<pre id="entityTemplate" class="hide"></pre>
-			        	<pre id="controllerTemplate" class="hide"></pre>
-			        	<pre id="testTemplate" class="hide"></pre>
 		    		</div>
 	        	</div>
     		</div>

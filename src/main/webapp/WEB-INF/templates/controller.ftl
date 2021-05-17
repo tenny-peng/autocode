@@ -1,190 +1,84 @@
-package com.tenny.${interfaceName?lower_case}.controller;
+package com.starcare.ecg.controller.${entityName?lower_case};
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.RestController;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import com.tenny.${interfaceName?lower_case}.entity.${entityName};
-import com.tenny.${interfaceName?lower_case}.service.${interfaceName}Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.starcare.common.util.Result;
+import com.starcare.ecg.${entityName?uncap_first}.I${entityName}Service;
+import com.starcare.ecg.${entityName?uncap_first}.${entityName}Entity;
+import com.starcare.ecg.exception.EcgException;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api
 @RestController
-@RequestMapping("/${interfaceName?uncap_first}")
-public class ${interfaceName}Controller {
+@RequestMapping("${entityName?uncap_first}")
+public class ${entityName}Controller {
 	
-	private Logger logger = LoggerFactory.getLogger(${interfaceName}Controller.class);
+	Logger logger = LoggerFactory.getLogger(${entityName}Controller.class);
 	
 	@Autowired
-	private ${interfaceName}Service ${interfaceName?uncap_first}Service;
+	private I${entityName}Service ${entityName?uncap_first}Service;
 	
-	@RequestMapping(value = "/list", method = RequestMethod.POST)
-	public Map<String, Object> list(@ModelAttribute ${entityName} ${entityName?uncap_first}){
-		logger.info("${interfaceName?uncap_first} controller --- into list...");
-		Map<String, Object> result = new HashMap<String, Object>();
+	@ApiOperation("查询")
+	@PostMapping("list")
+	public Result list(${entityName}Entity ${entityName?uncap_first}Entity){
+		Result result = new Result();
 		
-		try {
-			List<${entityName}> list = ${interfaceName?uncap_first}Service.list(${entityName?uncap_first});
-			result.put("data", list);
-		} catch(Exception e){
-			logger.error(e);
-			result.put("success", false);
-			result.put("message", e);
-		}
+		// 总数
+		Integer totalCount = ${entityName?uncap_first}Service.count(${entityName?uncap_first}Entity);
+		result.put("totalCount", totalCount);
 		
-		result.put("success", true);
+		List<${entityName}Entity> list = ${entityName?uncap_first}Service.list(${entityName?uncap_first}Entity);
+		result.put("data", list);
+		
 		return result;
+		
 	}
 	
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public Map<String, Object> add(@ModelAttribute ${entityName} ${entityName?uncap_first}) {
-		logger.info("${interfaceName?uncap_first} controller --- into add...");
-		Map<String, Object> result = new HashMap<String, Object>();
+	@ApiOperation("新增")
+	@PostMapping("add")
+	public Result add(${entityName}Entity ${entityName?uncap_first}Entity) {
+		${entityName?uncap_first}Service.add(${entityName?uncap_first}Entity);
 		
-		// 验证必填属性
-		<#list params as param>
-		<#if param.notNull == "true">
-			<#if param.fieldType == "String">
-		if(StringUtils.isEmpty(${entityName?uncap_first}.get${param.fieldName?cap_first}())){
-			result.put("success", false);
-            result.put("message", "${param.fieldName} can not be null");
-            return result;
-		}
-			<#else>
-		if(null == ${entityName?uncap_first}.get${param.fieldName?cap_first}()){
-			result.put("success", false);
-            result.put("message", "${param.fieldName} can not be null");
-            return result;
-		}
-			</#if>
-		</#if>
-		</#list>
-		
-		try {
-			${interfaceName?uncap_first}Service.add(${entityName?uncap_first});
-		} catch (Exception e) {
-			logger.error(e);
-            result.put("success", false);
-            result.put("message", e);
-		}
-		
-		result.put("success", true);
-		return result;
+		return new Result();
 	}
 	
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public Map<String, Object> update(@ModelAttribute ${entityName} ${entityName?uncap_first}) {
-		logger.info("${interfaceName?uncap_first} controller --- into update...");
-		Map<String, Object> result = new HashMap<String, Object>();
+	@ApiOperation("更新")
+	@PostMapping("update")
+	public Result update(${entityName}Entity ${entityName?uncap_first}Entity) {
+		Result result = new Result();
 		
 		// 验证主键id
-		<#list params as param>
-		<#if param.isKey == "true">
-		if(null == ${entityName?uncap_first}.get${param.fieldName?cap_first}()){
-			result.put("success", false);
-            result.put("message", "${param.fieldName} can not be null");
-            return result;
-		}
-		</#if>
-		</#list>
-		// 验证必填属性
-		<#list params as param>
-		<#if param.notNull == "true">
-			<#if param.fieldType == "String">
-		if(StringUtils.isEmpty(${entityName?uncap_first}.get${param.fieldName?cap_first}())){
-			result.put("success", false);
-            result.put("message", "${param.fieldName} can not be null");
-            return result;
-		}
-			<#else>
-		if(null == ${entityName?uncap_first}.get${param.fieldName?cap_first}()){
-			result.put("success", false);
-            result.put("message", "${param.fieldName} can not be null");
-            return result;
-		}
-			</#if>
-		</#if>
-		</#list>
-		
-		try {
-			${interfaceName?uncap_first}Service.update(${entityName?uncap_first});
-		} catch (Exception e) {
-			logger.error(e);
-            result.put("success", false);
-            result.put("message", e);
+		if(null == ${entityName?uncap_first}Entity.get${entityName}Id()){
+			throw new EcgException("0x00y");
 		}
 		
-		result.put("success", true);
+		${entityName?uncap_first}Service.update(${entityName?uncap_first}Entity);
+		
         return result;
 	}
 	
-	@RequestMapping(value = "/delete", method = RequestMethod.POST)
-	public Map<String, Object> delete(@ModelAttribute ${entityName} ${entityName?uncap_first}) {
-		logger.info("${interfaceName?uncap_first} controller --- into delete...");
-		Map<String, Object> result = new HashMap<String, Object>();
+	@ApiOperation("删除")
+	@PostMapping("delete")
+	public Result delete(@RequestParam List<Integer> ${entityName?uncap_first}Ids) {
+		Result result = new Result();
 		
 		// 验证主键id
-		<#list params as param>
-		<#if param.isKey == "true">
-		if(null == ${entityName?uncap_first}.get${param.fieldName?cap_first}()){
-			result.put("success", false);
-            result.put("message", "${param.fieldName} can not be null");
-            return result;
-		}
-		</#if>
-		</#list>
-		
-		try {
-			${interfaceName?uncap_first}Service.delete(${entityName?uncap_first});
-		} catch (Exception e) {
-			logger.error(e);
-            result.put("success", false);
-            result.put("message", e);
+		if(null == ${entityName?uncap_first}Ids || ${entityName?uncap_first}Ids.isEmpty()){
+			throw new EcgException("0x00y");
 		}
 		
-		result.put("success", true);
-        return result;
-	}
-	
-	@RequestMapping(value = "/exist", method = RequestMethod.POST)
-	public Map<String, Object> exist(@ModelAttribute ${entityName} ${entityName?uncap_first}) {
-		logger.info("${interfaceName?uncap_first} controller --- into exist...");
-		Map<String, Object> result = new HashMap<String, Object>();
+		${entityName?uncap_first}Service.delete(${entityName?uncap_first}Ids);
 		
-		// 验证字段存在
-		<#list params as param>
-		<#if param.notNull == "true">
-			<#if param.fieldType == "String">
-		if(StringUtils.isEmpty(${entityName?uncap_first}.get${param.fieldName?cap_first}())){
-			result.put("success", false);
-            result.put("message", "${param.fieldName} can not be null");
-            return result;
-		}
-			<#else>
-		if(null == ${entityName?uncap_first}.get${param.fieldName?cap_first}()){
-			result.put("success", false);
-            result.put("message", "${param.fieldName} can not be null");
-            return result;
-		}
-			</#if>
-		</#if>
-		</#list>
-		
-		try {
-			boolean isExist = ${interfaceName?uncap_first}Service.exist(${entityName?uncap_first});
-			result.put("data", isExist);
-		} catch (Exception e) {
-			logger.error(e);
-            result.put("success", false);
-            result.put("message", e);
-		}
-		
-		result.put("success", true);
         return result;
 	}
 	

@@ -1,71 +1,79 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.tenny</groupId>
-  <artifactId>autocode</artifactId>
-  <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>autocode Webapp</name>
-  <url>http://maven.apache.org</url>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
+  	<modelVersion>4.0.0</modelVersion>
+  	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.2.5.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+  	<groupId>com.tenny</groupId>
+  	<artifactId>autocode</artifactId>
+  	<version>1.0</version>
+  	<name>autocode</name>
+  	<description>generate common code through freemarker</description>
+  	
+  	<properties>
+		<java.version>1.8</java.version>
+		<maven-jar-plugin.version>3.0.0</maven-jar-plugin.version>
+		<freemarker.version>2.3.9</freemarker.version>
+		<mybatis.version>2.1.0</mybatis.version>
+		<oracle.version>10.2.0.4.0</oracle.version>
+		<fastjson.version>1.2.58</fastjson.version>
+	</properties>
+  	
+  	<dependencies>
+    	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
     
-    <!-- https://mvnrepository.com/artifact/freemarker/freemarker -->
-	<dependency>
-	    <groupId>freemarker</groupId>
-	    <artifactId>freemarker</artifactId>
-	    <version>2.3.9</version>
-	</dependency>
+		<dependency>
+	    	<groupId>freemarker</groupId>
+	    	<artifactId>freemarker</artifactId>
+	    	<version>${freemarker.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 	
-	<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-	<dependency>
-	    <groupId>mysql</groupId>
-	    <artifactId>mysql-connector-java</artifactId>
-	    <version>5.1.44</version>
-	</dependency>
+		<dependency>
+	    	<groupId>mysql</groupId>
+	    	<artifactId>mysql-connector-java</artifactId>
+		</dependency>
 	
- 	<!-- ojdbc14 -->
-	<dependency>
-	    <groupId>oracle</groupId>
-	    <artifactId>ojdbc14</artifactId>
-	    <version>10.2.0.4.0</version>
-	</dependency>
+ 		<!-- ojdbc14 -->
+		<dependency>
+	    	<groupId>oracle</groupId>
+	    	<artifactId>ojdbc14</artifactId>
+	    	<version>${oracle.version}</version>
+		</dependency>
+       
+    	<dependency>  
+        	<groupId>com.alibaba</groupId>  
+        	<artifactId>fastjson</artifactId>  
+        	<version>${fastjson.version}</version>  
+    	</dependency> 
 	
-	 <!-- 导入java ee jar 包 -->  
-     <dependency>
-         <groupId>javax</groupId>  
-         <artifactId>javaee-api</artifactId>  
-         <version>7.0</version>  
-     </dependency>
-     
-    <!-- 格式化对象，方便输出日志 -->  
-    <dependency>  
-        <groupId>com.alibaba</groupId>  
-        <artifactId>fastjson</artifactId>  
-        <version>1.2.5</version>  
-    </dependency> 
-	
-  </dependencies>
+  	</dependencies>
   
-  <build>
-    <finalName>autocode</finalName>
-    <plugins>  
-		<plugin>  
-			<groupId>org.apache.maven.plugins</groupId>  
-			<artifactId>maven-compiler-plugin</artifactId> 
-			<version>3.6.1</version>
-			<configuration>  
-				<source>1.8</source>  
-				<target>1.8</target> 
-				<encoding>UTF-8</encoding>
-			</configuration>  
-		</plugin>  
-	</plugins>  
-  </build>
+  	<build>
+		<finalName>autocode</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
   
 </project>

@@ -1,4 +1,4 @@
-package utils;
+package com.tenny.autocode.util;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -68,11 +68,12 @@ public class MysqlUtil {
     	try{
             Statement stmt = con.createStatement();
              
-            String sql = "select column_name, data_type, column_key, is_nullable, column_comment from information_schema.columns where table_name='" + tableName + "'and table_schema='" + DATABASE_URL.substring(DATABASE_URL.lastIndexOf("/") + 1, DATABASE_URL.length()) + "'";
+            String sql = "select column_name, data_type, column_key, is_nullable, column_comment from information_schema.columns where table_name='" + tableName + "'";
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()){
                 HashMap<String,String> map = new HashMap<String,String>();
                 map.put("columnName", rs.getString("column_name"));
+                // TODO.dataType转换【varchar-->String，并将此转换由paramutil移致mysqlUtil及oracleUtil内部，使得产生的columns直接可用】
                 map.put("dataType", rs.getString("data_type"));
                 map.put("isKey", ParamUtil.isEmpty(rs.getString("column_key"))?"false":"true");
                 map.put("notNull", rs.getString("is_nullable").equals("YES")?"false":"true");
@@ -94,4 +95,9 @@ public class MysqlUtil {
 		return columns;
     }
     
+    public static void main(String[] args) {
+    	init("localhost:3306/news","root","tenny123");
+    	System.out.println(getTables());
+    	System.out.println(getTableCloumns("pub_news"));
+	}
 }

@@ -1,44 +1,49 @@
-package com.tenny.${interfaceName?lower_case}.service;
+package com.starcare.ecg.${entityName?uncap_first};
 
 import java.util.List;
 
-import com.tenny.${interfaceName?lower_case}.entity.${entityName};
+public interface I${entityName}Service {
 
-public interface ${interfaceName}Service {
+	/**
+	 * 获取数据总量
+	 * @param ${entityName?uncap_first}Entity
+	 * @return
+	 */
+	public Integer count(${entityName}Entity ${entityName?uncap_first}Entity);
 	
 	/**
 	 * 分页查询
-	 * @param ${entityName?uncap_first}
+	 * @param ${entityName?uncap_first}Entity
 	 * @return
 	 */
-	public List<${entityName}> list(${entityName} ${entityName?uncap_first});
+	public List<${entityName}Entity> list(${entityName}Entity ${entityName?uncap_first}Entity);
 	
 	/**
 	 * 新增
-	 * @param ${entityName?uncap_first}
+	 * @param ${entityName?uncap_first}Entity
 	 * @return
 	 */
-	public void add(${entityName} ${entityName?uncap_first}) throws Exception ;
+	public void add(${entityName}Entity ${entityName?uncap_first}Entity);
 	
 	/**
 	 * 修改
-	 * @param ${entityName?uncap_first}
+	 * @param ${entityName?uncap_first}Entity
 	 * @return
 	 */
-	public void update(${entityName} ${entityName?uncap_first}) throws Exception ;
+	public void update(${entityName}Entity ${entityName?uncap_first}Entity);
 	
 	/**
 	 * 删除
-	 * @param ${entityName?uncap_first}
+	 * @param ${entityName?uncap_first}Ids
 	 * @return
 	 */
-	public void delete(${entityName} ${entityName?uncap_first}) throws Exception ;
+	public void delete(List<Integer> ${entityName?uncap_first}Ids);
 	
 	/**
 	 * 查询已存在
-	 * @param ${entityName?uncap_first}
+	 * @param ${entityName?uncap_first}Entity
 	 * @return
 	 */
-	public boolean exist(${entityName} ${entityName?uncap_first});
+	public boolean exist(${entityName}Entity ${entityName?uncap_first}Entity);
 
 }

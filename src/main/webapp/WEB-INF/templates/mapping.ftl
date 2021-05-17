@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.tenny.${interfaceName?lower_case}.dao.${interfaceName}Dao">
-	<resultMap type="com.tenny.${interfaceName?lower_case}.entity.${entityName}" id="BaseResultMap">
+<mapper namespace="com.starcare.ecg.dao.${entityName}Dao">
+	<resultMap type="com.starcare.ecg.${entityName}Entity" id="BaseResultMap">
 	<#list params as param>
 		<result column="${param.columnName}" property="${param.fieldName}" />
 	</#list>
@@ -14,33 +14,62 @@
 	</#list>
 	</sql>
 	
-	<!-- 列表查询 -->
+	<!-- 数据总量 -->
+	<select id="count" resultType="Integer">
+		SELECT
+			count(${entityName?uncap_first}_id)
+		FROM ${tableName}
+		<where>
+			<#list params as param>
+			<#if param.fieldType == "String">
+			<if test="${param.fieldName} != null and ${param.fieldName} != ''">
+				AND ${param.columnName} like '%' || ${r'#{'}${param.fieldName}} || '%'
+			</if>
+			<#elseif param.fieldType == "Date">
+			<if test="${param.fieldName}Start != null">
+				<![CDATA[ AND ${param.columnName} >= ${r'#{'}${param.fieldName}Start}]]>
+			</if>
+			<if test="${param.fieldName}End != null">
+				 <![CDATA[AND ${param.columnName} <= ${r'#{'}${param.fieldName}End}]]>
+			</if>
+			<#else>
+			<if test="${param.fieldName} != null">
+				AND ${param.columnName} = ${r'#{'}${param.fieldName}}
+			</if>
+			</#if>
+			</#list>
+		</where>
+	</select>
+	
+	<!-- 分页查询 -->
 	<select id="list" resultMap="BaseResultMap">
 		SELECT
 			<include refid="Base_Column_List"></include>
 		FROM ${tableName}
-		WHERE 1=1
-		<#list params as param>
-		<#if param.fieldType == "String">
-		<if test="${param.fieldName} != null and ${param.fieldName} != ''">
-			AND ${param.columnName} like '%' || ${r'#{'}${param.fieldName}} || '%'
-		</if>
-		<#elseif param.fieldType == "Date">
-		<if test="${param.fieldName}Start != null">
-			<![CDATA[ AND ${param.columnName} >= ${r'#{'}${param.fieldName}Start}]]>
-		</if>
-		<if test="${param.fieldName}End != null">
-			 <![CDATA[AND ${param.columnName} <= ${r'#{'}${param.fieldName}End}]]>
-		</if>
-		<#else>
-		<if test="${param.fieldName} != null">
-			AND ${param.columnName} = ${r'#{'}${param.fieldName}}
-		</if>
-		</#if>
-		</#list>
+		<where>
+			<#list params as param>
+			<#if param.fieldType == "String">
+			<if test="${param.fieldName} != null and ${param.fieldName} != ''">
+				AND ${param.columnName} like '%' || ${r'#{'}${param.fieldName}} || '%'
+			</if>
+			<#elseif param.fieldType == "Date">
+			<if test="${param.fieldName}Start != null">
+				<![CDATA[ AND ${param.columnName} >= ${r'#{'}${param.fieldName}Start}]]>
+			</if>
+			<if test="${param.fieldName}End != null">
+				 <![CDATA[AND ${param.columnName} <= ${r'#{'}${param.fieldName}End}]]>
+			</if>
+			<#else>
+			<if test="${param.fieldName} != null">
+				AND ${param.columnName} = ${r'#{'}${param.fieldName}}
+			</if>
+			</#if>
+			</#list>
+		</where>
+		ORDER BY ${r'${'}orderColumn} ${r'${'}orderType}, ${entityName?uncap_first}_id LIMIT ${r'#{'}length} OFFSET ${r'#{'}offset}
 	</select>
 	
-	<!-- 添加  Oracle主键不能自增，需要使用序列， Mysql主键可以自增，故Mysql时下方序列及id字段删除-->
+	<!-- 添加 -->
 	<insert id="add">
 		<#assign keyField = params[0].fieldName>
 		<#list params as param>
@@ -48,17 +77,18 @@
 		<#assign keyField = param.fieldName>
 		</#if>
 		</#list>
-		<selectKey resultType="Integer" keyProperty="${keyField}" order="BEFORE">  
-	    	SELECT ${tableName}_SEQ.nextval FROM DUAL
-	    </selectKey>
 		INSERT INTO ${tableName}(
 			<#list params as param>
+			<#if param.isKey != "true">
 			${param.columnName},
+			</#if>
 			</#list>
 		)
 		VALUES(
 			<#list params as param>
+				<#if param.isKey != "true">
 			${r'#{'}${param.fieldName}},
+				</#if>
 			</#list>
 		)
 	</insert>
@@ -68,44 +98,39 @@
 		UPDATE ${tableName}
 		<set>
 			<#list params as param>
+			<#if param.isKey != "true">
 			<if test="${param.fieldName} != null">
 				${param.columnName} = ${r'#{'}${param.fieldName}},
 			</if>
+			</#if>
 			</#list>
 		</set>
-		WHERE 1=1
+		WHERE
 		<#list params as param>
-		<#if param.isKey == "true">
-		AND　${param.columnName} = ${r'#{'}${param.fieldName}}
-		</#if>
+			<#if param.isKey == "true">
+				${param.columnName} = ${r'#{'}${param.fieldName}}
+			</#if>
 		</#list>
 	</update>
 	
-	<!-- 删除模块 -->
+	<!-- 删除 -->
 	<delete id="delete">
 		DELETE FROM ${tableName}
-		WHERE 1=1
-		<#list params as param>
-		<#if param.isKey == "true">
-		AND　${param.columnName} = ${r'#{'}${param.fieldName}}
-		</#if>
-		</#list>
+		WHERE ${entityName?uncap_first}_id IN
+		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+			${r'#{'}item}
+		</foreach>
 	</delete>
 	
-	<!-- 查询已存在 xyz是要验证的字段名 -->
+	<!-- 查询已存在 -->
 	<select id="exist" resultMap="BaseResultMap">
 		SELECT
-		<include refid="Base_Column_List" />
+			<include refid="Base_Column_List" />
 		FROM ${tableName}
-		WHERE 1=1
-		AND XYZ = ${r'#{'}xyz}
-		<#list params as param>
-		<#if param.isKey == "true">
-		<if test="${param.fieldName} != null">
-			AND ${param.columnName} != ${r'#{'}${param.fieldName}}
+		WHERE ${entityName?uncap_first}_code = ${r'#{'}${entityName?uncap_first}Code} 
+		<if test="${entityName?uncap_first}Id != null">
+			AND ${entityName?uncap_first}_id != ${r'#{'}${entityName?uncap_first}Id}
 	    </if>
-		</#if>
-		</#list>
 	</select>
 	
 </mapper>

@@ -1,4 +1,4 @@
-package utils;
+package com.tenny.autocode.util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.tenny.autocode.entity.CodeEntity;
+
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -24,7 +26,7 @@ public class FreemarkerUtil {
 	// 公共资源
 	public static String TEMP_SERVLET_CONTEXT = ""; // 项目路径[D:\xxxx\autocode\]
 	
-	public static String MODEL_ROOTPATH = "/WEB-INF/templates/";
+	public static String MODEL_ROOTPATH = "WEB-INF/templates/";
 	
 	public static String MODEL_SUFFIX = ".ftl";
 	
@@ -44,9 +46,6 @@ public class FreemarkerUtil {
 	public static String ENTITY_MODEL = "entity";
 	
 	public static String CONTROLLER_MODEL = "controller";
-	
-	public static String TEST_MODEL = "test";
-	
 	
 	// 工具类配置
 	private static String DECODE = "UTF-8";
@@ -68,7 +67,6 @@ public class FreemarkerUtil {
 		modelNameList.add(MAPPING_MODEL);
 		modelNameList.add(ENTITY_MODEL);
 		modelNameList.add(CONTROLLER_MODEL);
-		modelNameList.add(TEST_MODEL);
 		
 		needTransferNameList.add(MAPPING_MODEL);
 		
@@ -81,20 +79,21 @@ public class FreemarkerUtil {
 	}
 	
 	/**
-	 * 产生所有业务类
-	 * @param db_type 数据库类型
-	 * @param db_url 数据库url
-	 * @param db_user 数据库用户名
-	 * @param db_pw 数据库密码
-	 * @param db_table 数据库表名
-	 * @param entityName 实体类名
-	 * @param interfaceName 接口名
-	 * @param fieldList 字段属性
-	 * @return Map<String, String> 业务类集合
+	 * 产生所有业务类(来源为表单输入)
+	 * @param entity 实体类
 	 */
-	public static Map<String, String> getAllClass(String db_type, String db_url, String db_user, String db_pw, String db_table, String entityName, String interfaceName, List<Map<String,String>> fieldList){
-	    Map<String, Object> beanMap = ParamUtil.getFinalParam(db_type, db_url, db_user, db_pw, db_table, entityName, interfaceName, fieldList);
-	    return getAllClass(beanMap);
+	public static Map<String, String> getAllClassFromPage(CodeEntity entity){
+		Map<String, Object> beanMap = ParamUtil.getFinalParamFromPage(entity);
+		return getAllClass(beanMap);
+	}
+	
+	/**
+	 * 产生所有业务类(来源为数据库)
+	 * @param entity 实体类
+	 */
+	public static Map<String, String> getAllClassFromDB(CodeEntity entity){
+		Map<String, Object> beanMap = ParamUtil.getFinalParamFromDB(entity);
+		return getAllClass(beanMap);
 	}
 	
 	/**
@@ -137,7 +136,6 @@ public class FreemarkerUtil {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (TemplateException e) {
-		    System.err.println("something error in" + modle);
 			e.printStackTrace();
 		}
 		return stringWriter.toString();

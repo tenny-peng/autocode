@@ -1,47 +1,50 @@
-package com.tenny.${interfaceName?lower_case}.dao;
+package com.starcare.ecg.dao.${entityName?uncap_first};
 
 import java.util.List;
 
-import com.tenny.${interfaceName?lower_case}.entity.${entityName};
+import com.starcare.ecg.${entityName}Entity;
 
-public interface ${interfaceName}Dao {
+public interface ${entityName}Dao {
+	
+	/**
+	 * 获取数据总量
+	 * @param ${entityName?uncap_first}Entity
+	 * @return
+	 */
+	public Integer count(${entityName}Entity ${entityName?uncap_first}Entity);
 
 	/**
 	 * 分页查询
-	 * @param ${entityName?uncap_first}
+	 * @param ${entityName?uncap_first}Entity
 	 * @return
 	 */
-	public List<${entityName}> list(${entityName} ${entityName?uncap_first});
+	public List<${entityName}Entity> list(${entityName}Entity ${entityName?uncap_first}Entity);
 	
 	/**
 	 * 新增
-	 * @param ${entityName?uncap_first}
+	 * @param ${entityName?uncap_first}Entity
 	 * @return
 	 */
-	public void add(${entityName} ${entityName?uncap_first});
+	public void add(${entityName}Entity ${entityName?uncap_first}Entity);
 	
 	/**
 	 * 更新
-	 * @param ${entityName?uncap_first}
+	 * @param ${entityName?uncap_first}Entity
 	 * @return
 	 */
-	public void update(${entityName} ${entityName?uncap_first}N);
+	public void update(${entityName}Entity ${entityName?uncap_first}Entity);
 	
-	<#list params as param>
-	<#if param.isKey == "true">
 	/**
 	 * 删除
-	 * @param ${param.fieldName}
+	 * @param ${entityName?uncap_first}Ids
 	 */
-	public void delete(Integer ${param.fieldName});
-	</#if>
-	</#list>
+	public void delete(List<Integer> ${entityName?uncap_first}Ids);
 	
 	/**
 	 * 查询已存在
-	 * @param ${entityName?uncap_first}
+	 * @param ${entityName?uncap_first}Entity
 	 * @return
 	 */
-	public News exist(${entityName} ${entityName?uncap_first});
+	public ${entityName}Entity exist(${entityName}Entity ${entityName?uncap_first}Entity);
 	
 }

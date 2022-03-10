@@ -16,9 +16,7 @@ public class TemplateController {
 	
 	@RequestMapping("getTemplates")
 	public Result doPost() throws ServletException, IOException {
-		Result result = new Result();
-    	result.setData(FreemarkerUtil.getAllTemplateStr());
-    	return result;
+    	return Result.ok(FreemarkerUtil.getAllTemplateStr());
     }
 	
 }

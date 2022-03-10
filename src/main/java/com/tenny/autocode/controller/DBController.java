@@ -20,7 +20,6 @@ public class DBController {
 	
 	@RequestMapping("getTables")
 	public Result getTables(CodeEntity entity) {
-		Result result = new Result();
     	List<String> tables = new ArrayList<String>();
     	
     	// 从数据库获取表
@@ -39,8 +38,7 @@ public class DBController {
     		}
     	}
     	
-    	result.setData(tables);
-    	return result;
+    	return Result.ok(tables);
     }
 	
 }

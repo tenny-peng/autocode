@@ -18,7 +18,6 @@ public class CodeController {
     
     @RequestMapping("getCode")
     public Result getCode(CodeEntity entity) {
-    	Result result = new Result();
     	Map<String, String> bzClass = new HashMap<String, String>();
     	
     	// 从已有数据库表获取字段产生业务类
@@ -29,8 +28,7 @@ public class CodeController {
     		bzClass = FreemarkerUtil.getAllClassFromPage(entity);
     	}
     
-    	result.setData(bzClass);
-    	return result;
+    	return Result.ok(bzClass);
     }
     
 }
